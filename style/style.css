@@ -43,6 +43,14 @@ table
 {   border-collapse: collapse;
 }
 
+.tr-name, .tr-dest
+{   width: 200px;
+}
+
+.tr-freq, .tr-eta, .tr-min
+{   width: 75px;
+}
+
 .table-head
 {   border-bottom: 1px solid black;
     text-align: left;
