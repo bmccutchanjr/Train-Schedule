@@ -1,0 +1,94 @@
+*
+{   box-sizing: border-box;
+}
+
+:root
+{   --head-bg-color: green;
+    --head-brd-color: black;
+    --text-color: black;
+}
+
+body
+{   color: var(--text-color);
+    font-family: sans-serif;
+    font-size: 14px;
+    margin: 0px;
+    padding: 0px;
+}
+
+header
+{   background: var(--head-bg-color);
+    border: 1px solid var(--head-brd-color);
+}
+
+.data-div
+{   border: 1px solid blue;
+    border-radius: 2px;
+    margin: 0px auto;
+    margin-top: 25px;
+    width: 80%;
+}
+
+.data-header
+{   background: blue;
+    color: white;
+    padding: 5px;
+}
+
+/*                                      */
+/* style for the output table           */
+/*                                      */
+
+table
+{   border-collapse: collapse;
+}
+
+.table-head
+{   border-bottom: 1px solid black;
+    text-align: left;
+}
+
+/*                                      */
+/* style for the input form             */
+/*                                      */
+
+#train-form
+{   padding: 25px;
+}
+
+input
+{   font-size: 14px;
+    margin-bottom: 10px;
+    padding: 3px;
+    width: 100%;
+}
+
+.button
+{   width: auto;
+}
+
+/*                                      */
+/* style specific to sticky footer      */
+/*                                      */
+
+body, html
+{   height: 100%;
+}
+
+.wrapper
+{   background: rgba(0, 255, 255, 0.5);
+    height: auto;
+    margin-bottom: -31px;
+    min-height: 100%;
+}
+
+.push
+{   background: yellow;
+    height: 31px;
+}
+
+footer
+{   background: var(--head-bg-color);
+    font-size: 10px;
+    padding: 10px;
+}
