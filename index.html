@@ -38,7 +38,8 @@
                         <tr class="table-head">
                             <th class="tr-name">Train Name</th>
                             <th class="tr-dest">Destination</th>
-                            <th class="tr-freq">Frequency (min)</th>
+                            <th class="tr-freq">Departing</th>
+                            <th class="tr-eta">Frequency</th>
                             <th class="tr-eta">ETA</th>
                             <th class="tr-min">Minutes Away</th>
                         </tr>
@@ -68,7 +69,7 @@
                         <label for="train-depart">Departure time:</label>
                         <input id="train-depart"
                                name="train-depart"
-                               placeholder="19:00"
+                               placeholder="HH:MM"
                                type="time">
                         <br>
 
@@ -92,6 +93,7 @@
     <!-- link to jQuery-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
     <script language="JavaScript"
             src="scripts/page.js">
     </script>
