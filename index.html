@@ -6,15 +6,6 @@
               content="width=device-width, initial-scale=1.0">
         <title>Train Schedule</title>
 
-        <!-- link to Bootstrap -->
-        <!--link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-              rel="stylesheet"
-              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-              crossorigin="anonymous"-->
-        <!-- link to MeyerWeb reset.css -->
-        <!--link href="style/reset.css"
-              rel="stylesheet"
-              type="text/css"-->
         <link href="style/style.css"
               rel="stylesheet"
               type="text/css">
@@ -31,19 +22,21 @@
             <main>
                 <section class="data-div" id="schedule">
                     <div class="data-header">
-                        Current Train Schedule
+                        <hf>Current Train Schedule</hf>
                     </div>
 
-                    <table id="schedule-table">
-                        <tr class="table-head">
-                            <th class="tr-name">Train Name</th>
-                            <th class="tr-dest">Destination</th>
-                            <th class="tr-freq">Departing</th>
-                            <th class="tr-eta">Frequency</th>
-                            <th class="tr-eta">ETA</th>
-                            <th class="tr-min">Minutes Away</th>
-                        </tr>
-                    </table>
+                    <div id="table-wrapper">
+                        <table id="schedule-table">
+                            <tr class="table-head">
+                                <th class="tr-name">Train Name</th>
+                                <th class="tr-dest">Destination</th>
+                                <th class="tr-freq">Departing</th>
+                                <th class="tr-eta">Frequency</th>
+                                <th class="tr-eta">ETA</th>
+                                <th class="tr-min">Minutes Away</th>
+                            </tr>
+                        </table>
+                    </div>
                 </section>
 
                 <section class="data-div" id="form">

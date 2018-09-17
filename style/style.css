@@ -3,8 +3,12 @@
 }
 
 :root
-{   --head-bg-color: green;
+{   --button-bg-color: blue;
+    --button-brd-color: blue;
+    --button-color: white;
+    --head-bg-color: #00004f;
     --head-brd-color: black;
+    --head-color: white;
     --text-color: black;
 }
 
@@ -19,10 +23,18 @@ body
 header
 {   background: var(--head-bg-color);
     border: 1px solid var(--head-brd-color);
+    color: var(--head-color);
+}
+
+header h1
+{   margin: 0px auto;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    width: 80%;
 }
 
 .data-div
-{   border: 1px solid blue;
+{   border: 1px solid var(--button-brd-color);
     border-radius: 2px;
     margin: 0px auto;
     margin-top: 25px;
@@ -30,8 +42,8 @@ header
 }
 
 .data-header
-{   background: blue;
-    color: white;
+{   background: var(--button-bg-color);
+    color: var(--button-color);
     padding: 5px;
 }
 
@@ -41,6 +53,10 @@ header
 
 table
 {   border-collapse: collapse;
+    margin: 0px auto;
+    margin-bottom: 25px;
+    margin-top: 25px;
+    width: 735px;
 }
 
 .tr-name, .tr-dest
@@ -72,7 +88,17 @@ input
 }
 
 .button
-{   width: auto;
+{   background: var(--button-bg-color);
+    border: 1px solid var(--button-brd-color);
+    border-radius: 2px;
+    color: var(--button-color);
+    padding: 3px;
+    width: auto;
+}
+
+.button:hover
+{   background: var(--button-color);
+    color: var(--button-brd-color);
 }
 
 /*                                      */
@@ -84,19 +110,68 @@ body, html
 }
 
 .wrapper
-{   background: rgba(0, 255, 255, 0.5);
-    height: auto;
-    margin-bottom: -31px;
+{   height: auto;
+    margin-bottom: -58px;
     min-height: 100%;
 }
 
 .push
-{   background: yellow;
-    height: 31px;
+{   height: 58px;
 }
 
 footer
 {   background: var(--head-bg-color);
-    font-size: 10px;
-    padding: 10px;
+    color: var(--head-color);
+    font-size: 12px;
+    margin-top: 25px;
+    padding: 8px;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+/*                                      */
+/* media queries for responsive design  */
+/*                                      */
+
+@media screen and (max-width: 930px)
+{   .data-div, header h1
+    {   width: 95%;
+    }
+
+    footer
+    {   text-align: center;
+    }
+}
+
+@media screen and (max-width: 790px)
+{   .data-div
+    {   overflow: auto;
+        margin-top: 5px;
+        width: 100%;
+    }
+
+    table
+    {   border-collapse: collapse;
+        margin: 0px auto;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        width: 735px;
+    }
+    
+    .tr-name, .tr-dest
+    {   width: 150px;
+    }
+    
+    .tr-freq, .tr-eta, .tr-min
+    {   width: 75px;
+    }
+    
+    .table-head
+    {   border-bottom: 1px solid black;
+        text-align: left;
+    }
+
+    #train-form
+    {   padding: 10px;
+    }
 }
