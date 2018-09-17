@@ -1,3 +1,5 @@
+var Trains = [];                // An array of objects representing all of the scheduled trains
+
 function validateInput ()
 {   // validate the data submitted on #train-form
 
@@ -75,40 +77,37 @@ function validateInput ()
     return true;
 }
 
-function getDate (d)
-{   // Get the date from the data
+function lastDeparture (d, freq)
+{   // Get the time (in 24-hour format) from the data. kind of, almost.  I actually want the most
+    // recent departure time, no matter what the first was.  Returns a moment object representing
+    // the most recent departure.
 
-    return moment(d, "YYYY/MM/DD HH:mm").format("YYYY/MM/DD");
-}
+    // get a moment object representing the first time of departure
+    var fDepart = moment(d, "YYYY/MM/DD HH:mm");
 
-function getTime (d)
-{   // Get the time (in 24-hour format) from the data
+    // and calculate how many time the train run since then
+    var delta = moment().diff(fDepart, "minutes");
 
-    return moment(d, "YYYY/MM/DD HH:mm").format("HH:mm");
-}
-
-function getETA (depart, freq)
-{   // Calculate the ETA and "minutes away" from the departure time and frequency of
-    // runs
-console.log("getETA()");
-//     var now = moment();
-    var mDepart = moment(depart, "YYYY/MM/DD HH:mm");
-
-    var delta = moment().diff(mDepart);
-console.log("delta: ", delta);
-    var minutes = delta % freq;
-console.log("minutes: ", minutes);
-
-    // if delta or minutes are negative, the train hasn't started running yet.  Calculate
-    // ETA from the departure time, but minutes away from current time (as always).
-    var ETA = 0;
-
+    // If delta is negative, the train hasn't started running yet.  Return the input time
     if (delta < 0)
-        ETA = mDepart.add(freq, "minutes").format("HH:mm");
-    else
-        ETA = moment().add(minutes, "minutes").format("HH:mm");
-    
-    return ETA;
+        return fDepart;
+
+    // Other wise the most recent departing time is the first departing time + the number of times
+    // the train has made its run * the number of minutes to each run.
+    var numRuns = Math.floor(delta / freq);
+
+    // and add these minutes to the first departure time.  This is the time of the LAST
+    // departure
+    var lDepart = fDepart.add(freq * numRuns, "minutes");
+
+    return lDepart;
+}
+
+function getETA (departing, freq)
+{   // Calculate the ETA and "minutes away" from the most recent departure time and the minutes per
+    // run.  Returns a moment object representing the ETA
+
+    return departing.add(freq, "minutes");
 }
 
 function insertTable (data)
@@ -122,70 +121,35 @@ function insertTable (data)
     var newDestination = $("<td>");
     newDestination.text (data.Destination);
     
+    var departing = lastDeparture(data.Departure, data.Frequency);
+
     var newDeparture = $("<td>");
-//     newDeparture.text (data.Departure);
-    newDeparture.html (getDate(data.Departure) + "<br>" + getTime(data.Departure));
+    newDeparture
+        .addClass("depart-cell")
+        .attr("train", Trains.length)
+        .text (departing.format("HH:mm"));
     
     var newFrequency = $("<td>");
     newFrequency.text (data.Frequency);
 
-//     format = moment.format;
-
-//     var bits = data.Departure.split(":");
-// // //     var minutes = (bits[0] * 60) + (bits[1] * 1);
-// // // //     var dHour = moment(data.Departure, "HH");
-// // // // console.log("dHour: ", dHour);
-// // // //     var dMin = moment(data.Departure, "MM");
-// // // // console.log("dMin: ", dMin);
-// // // //     var minutes = (dHour * 60) + dMin;
-// // // console.log("insertTable()");
-// // // console.log("Departure: ", data.Departure);
-// // // console.log("minutes: ", minutes);
-// // // //     var minutes = moment.differenceInMinutes (now, startMin);
-// // // // console.log("minutes: ", minutes);
-// // //     var minutesToGo = minutes % data.Frequency;
-// // // console.log("minutesToGo: ", minutesToGo);
-// // // // var now = moment().format("HH:MM");
-// // // var now = moment(new Date(), "HH:MM");
-// // // console.log("now: ", now);
-// // // // console.log("moment(now): ", moment(1432, "HH:MM"));
-// // // // var nowPlus = now + minutesToGo;
-// // // // console.log("nowPlus: ", nowPlus);
-// // //     var ETA = moment(now).add(minutesToGo, "minutes");
-// // // console.log("ETA: ", ETA);
-// // // // console.log("")
-// // // var minutes = moment(new Date()).diff(moment(data.Depatrure, "HH:MM"));
-// // // var minutes = moment(data.Depatrure, "HH:MM").diff(moment(), "minutes");
-// // //     var departing = moment(data.Daparture, "HH:MM");
-// //     var departing = moment(bits[0]+bits[1], "HH:MM");
-// //     var departing = moment("18:00", "HH:MM");
-// // console.log("departure: ", departing);
-// // // console.log("minutes: ", minutes);
-// // 
-// // //     var newETA = $("<td>");
-// // //     newETA.text(ETA);
-// // // 
-// // //     var newArrival = $("<td>");
-// // //     newArrival.text(minutesToGo);
-//     var currentTime = moment(moment()).format("HH:mm");
-// console.log(moment());
-// console.log("currentTime: ", typeof currentTime);
-// console.log("departing: ", data.Departure);
-// console.log(currentTime + data.Departure);
-//     var dd = moment();
-// console.log("bits[0]", bits[0]);
-// console.log("bits[1]", bits[1]);
-//     dd.hours(bits[0]).valueOf();
-//     dd.minutes(bits[0]).valueOf();
-// console.log("dd: ", dd);
-// if (currentTime.substring(1,2) < data.Daparture.substring(1,2))
-// //     if ("15:30" < "18:00")
-//         console.log("The train left yesterday");
-// makeDate(data.Departure);
-    var ETA = getETA (data.Departure, data.Frequency);
-
+    var ETA = getETA (departing, data.Frequency);
     var newETA = $("<td>");
-    newETA.text(ETA);
+    newETA
+        .addClass("eta-cell")
+        .attr("train", Trains.length)
+        .text(ETA.format("HH:mm"));
+
+    // Apparently moment().diff() doesn't round seconds up to minutes.  Or at least that what appears
+    // to be happening.  The minutes away cell in the table shows 0 minutes the cycle before the 
+    // departure and arrival times change.
+
+    var minutes = ETA.diff(moment(), "minutes") + 1;
+    var newMin = $("<td>");
+    newMin
+        .addClass("min-cell")
+        .attr("train", Trains.length)
+        .text(minutes);
+
 
     newRow
         .append(newName)
@@ -193,11 +157,32 @@ function insertTable (data)
         .append(newDeparture)
         .append(newFrequency)
         .append(newETA)
-//         .append(newArrival);
+        .append(newMin);
 
     $("#schedule-table")
         .append(newRow);
     
+}
+
+function updateTable ()
+{   // Update table #train-schedule with updated departure and arrival times
+
+    tLength = Trains.length;
+    for (i=0; i<tLength; i++)
+    {
+        var dTime = lastDeparture(Trains[i].Departure, Trains[i].Frequency);
+        $(".depart-cell[train=" + i + "]").text (dTime.format("HH:mm"));
+    
+        var aTime = getETA(dTime, Trains[i].Frequency);
+        $(".eta-cell[train=" + i + "]").text (aTime.format("HH:mm"));
+    
+        // Apparently moment().diff() doesn't round seconds up to minutes.  Or at least that what appears
+        // to be happening.  The minutes away cell in the table shows 0 minutes the cycle before the 
+        // departure and arrival times change.
+
+        var minutes = aTime.diff(moment(), "minutes") + 1;
+        $(".min-cell[train=" + i + "]").text (minutes);
+    }
 }
 
 function makeDate (t)
@@ -219,7 +204,10 @@ function makeDate (t)
 }
 
 $(document).ready(function()
-{
+{   // Set an interval to update the schedule table every minute
+
+    setInterval(updateTable, 60000);
+
     // Initialize Firebase
 
     var config = {
@@ -238,7 +226,6 @@ $(document).ready(function()
     $("#train-submit").on("click", function(event)
     {   event.preventDefault();
 
-console.log("#train-submit");
         if (validateInput ())
         {   // The data is good...put it into Firebase
 
@@ -247,16 +234,26 @@ console.log("#train-submit");
                 Destination: $("#train-dest").val().trim(),
                 Departure: makeDate($("#train-depart").val().trim()),
                 Frequency: $("#train-freq").val().trim()
-            })
+            });
+
+            // and clear the form...
+
+            $("#train-name").val("");
+            $("#train-dest").val("");
+            $("#train-depart").val("");
+            $("#train-freq").val("");
         }
     });
 
     database.ref().on("child_added", function(snap)
     {   //  Get data as it is added to the database
 
-// console.log(snap.val());
         var Train = snap.val();
 
         insertTable (Train);
+
+        // And save this in Trains[] so the timer can update the table
+
+        Trains.push(snap.val());
     })
 });
